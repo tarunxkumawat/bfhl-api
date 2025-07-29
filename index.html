@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BFHL API Tester</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+    }
+    input, button {
+      padding: 10px;
+      margin-top: 10px;
+      width: 100%;
+      font-size: 16px;
+    }
+    pre {
+      background: #f4f4f4;
+      padding: 10px;
+      border: 1px solid #ccc;
+      margin-top: 20px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+  <h2>BFHL API Tester</h2>
+  <label>Enter comma-separated array:</label><br/>
+  <input type="text" id="inputArray" placeholder='e.g. a,1,334,4,R,$'>
+  <button onclick="submitData()">Send to API</button>
+  
+  <h3>Response:</h3>
+  <pre id="output"></pre>
+
+  <script>
+    async function submitData() {
+      const input = document.getElementById('inputArray').value;
+      const array = input.split(',').map(item => item.trim());
+
+      const response = await fetch('/bfhl', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ data: array })
+      });
+
+      const result = await response.json();
+      document.getElementById('output').textContent = JSON.stringify(result, null, 2);
+    }
+  </script>
+</body>
+</html>
